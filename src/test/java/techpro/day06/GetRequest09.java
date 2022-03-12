@@ -6,7 +6,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import techpro.testBase.DummyTestBase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -39,10 +41,11 @@ Toplam 24 tane çalışan olduğunu,
     Assert.assertEquals(24, jsonPath.getList("data.id").size());
     Assert.assertTrue(jsonPath.getList("data.employee_name").contains("Rhona Davidson"));
 
-    List<Integer> expectedAges= new ArrayList<>();
-    expectedAges.add(21);
-    expectedAges.add(23);
-    expectedAges.add(61);
+    List<Integer> expectedAges= Arrays.asList(21,23,61);
+   // List<Integer> expectedAges= new ArrayList<>();
+   // expectedAges.add(21);
+   // expectedAges.add(23);
+   // expectedAges.add(61);
     Assert.assertTrue(jsonPath.getList("data.employee_age").containsAll(expectedAges));
 
 
