@@ -20,12 +20,12 @@ public class GetRequest11TestData extends JsonPlaceHolderTestBase {
         JsonPlaceHolderTestData expectedObjesi=new JsonPlaceHolderTestData();
         HashMap<String, Object> expectedData= (HashMap<String, Object>) expectedObjesi.setupTestData();
 
-        System.out.println(expectedData);
+        System.out.println("expected data= " +expectedData);
 
         Response response= given().spec(spec01).when().get("/{para1}/{para2}");
         response.prettyPrint();
 
-        //MATCHERS CLASS ILE ASSERTION
+        //1. YONTEM>> MATCHERS CLASS ILE ASSERTION
         response.then().statusCode((int) expectedData.get("status")).
                 headers("via", equalTo(expectedData.get("via")),
                         "Server", equalTo(expectedData.get("Server"))).
@@ -33,7 +33,7 @@ public class GetRequest11TestData extends JsonPlaceHolderTestBase {
                         "title", equalTo(expectedData.get("title")),
                         "completed", equalTo(expectedData.get("completed")));
 
-        //JSON PATH ILE ASSERTION
+        //2. YONTEM>> JSON PATH ILE ASSERTION
         JsonPath jsonPath=response.jsonPath();
         Assert.assertEquals(expectedData.get("status"), response.statusCode());
         Assert.assertEquals(expectedData.get("via"), response.getHeader("via"));
@@ -41,6 +41,15 @@ public class GetRequest11TestData extends JsonPlaceHolderTestBase {
         Assert.assertEquals(expectedData.get("userId"), jsonPath.getInt("userId"));
         Assert.assertEquals(expectedData.get("title"), jsonPath.getString("title"));
         Assert.assertEquals(expectedData.get("completed"), jsonPath.getBoolean("completed"));
+
+        //3. YONTEM>> DESERIALIZATION ILE ASSERTION
+
+        HashMap<String, Object> actualData=response.as(HashMap.class);
+        Assert.assertEquals(expectedData.get("userId"), actualData.get("userId"));
+        Assert.assertEquals(expectedData.get("title"), actualData.get("title"));
+        Assert.assertEquals(expectedData.get("completed"), actualData.get("completed"));
+
+        System.out.println("actual data= "+ actualData);
 
 
 
