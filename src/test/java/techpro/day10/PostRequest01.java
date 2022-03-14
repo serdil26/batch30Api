@@ -1,6 +1,8 @@
 package techpro.day10;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.junit.Assert;
 import org.junit.Test;
 import techpro.testBase.DummyTestBase;
 import techpro.testData.DummyTestData;
@@ -37,8 +39,22 @@ olduğunu test edin
 
        HashMap<String, Object> expectedDataMap= obje.setupExpectedData();
 
-       Response response = given().spec(spec03).body(requestBodyMap).when().post("/{para1}");
+       Response response = given().spec(spec03).
+               auth().basic("admin", "password123").
+               body(requestBodyMap).when().post("/{para1}");
        response.prettyPrint();
+
+       //DESERIALIZATION ASSERT
+        HashMap<String, Object> actualDataMap= response.as(HashMap.class);
+        Assert.assertEquals(expectedDataMap.get("statusCode"), response.getStatusCode());
+        Assert.assertEquals(expectedDataMap.get("status"), actualDataMap.get("status"));
+        Assert.assertEquals(expectedDataMap.get("message"), actualDataMap.get("message"));
+
+        //JSON PATH ILE ASSERTION
+        JsonPath jsonPath=response.jsonPath();
+        Assert.assertEquals(expectedDataMap.get("statusCode"), response.getStatusCode());
+        Assert.assertEquals(expectedDataMap.get("status"),jsonPath.getString("status"));
+        Assert.assertEquals(expectedDataMap.get("message"),jsonPath.getString("message"));
 
 
 

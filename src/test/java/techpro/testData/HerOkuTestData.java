@@ -1,5 +1,7 @@
 package techpro.testData;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,22 @@ public class HerOkuTestData {
         expectedData.put("bookingdates", bookingDates);
 
     return expectedData;
+    }
+
+    public JSONObject setupTestAndRequestData(){
+
+        JSONObject bookingDates=new JSONObject();
+        bookingDates.put("checkin","1990-04-24");
+        bookingDates.put("checkout","2000-04-24");
+
+        JSONObject expectedRequest=new JSONObject();
+        expectedRequest.put("lastname", "erdil");
+        expectedRequest.put("firstname", "sezgin");
+        expectedRequest.put("totalprice", "222");
+        expectedRequest.put("depositpaid", "true");
+        expectedRequest.put("bookingdates", bookingDates);
+
+        return expectedRequest;
     }
 
 }
